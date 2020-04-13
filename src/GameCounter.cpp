@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <MD_MAX72xx.h>
+#include <IRremote.h>
 
 
 // Define the number of devices we have in the chain and the hardware interface
@@ -36,6 +37,34 @@ const int buttonPin2 = 1;
 int button2State = HIGH;
 unsigned long button2Time = 0;
 
+// IR Remote
+const int irPin = 5;
+IRrecv irrecv(irPin);
+decode_results results;
+
+// IR Remote Keys
+#define PWR 		0xFFA25D
+#define VOL_UP     	0xFF629D
+#define FUNC		0xFFE21D
+#define BACK    	0xFF22DD
+#define PLAY    	0xFF02FD
+#define FOREWARD    0xFFC23D
+#define DOWN    	0xFFE01F
+#define VOL_DOWN    0xFFA857
+#define UP          0xFF906F
+#define EQ          0xFF9867
+#define ST          0xFFB04F
+#define NUM_1       0xFF30CF
+#define NUM_0       0xFD30CF
+#define NUM_2       0xFF18E7
+#define NUM_3       0xFF7A85
+#define NUM_4       0xFF10EF
+#define NUM_5       0xFF38C7
+#define NUM_6       0xFF5AA5
+#define NUM_7       0xFF42BD
+#define NUM_8       0xFF4AB5
+#define NUM_9       0xFF52AD       
+
 
 // game points
 int pointsP1 = 0;
@@ -48,6 +77,7 @@ int gamePointsP2 = 0;
 void printText(uint8_t modStart, uint8_t modEnd, char *pMsg);
 void checkInput();
 void playerGetPoint(int playerID);
+void reset();
 
 
 // Print the text string to the LED matrix modules specified.
@@ -112,8 +142,10 @@ void printText(uint8_t modStart, uint8_t modEnd, char *pMsg)
 	mx.control(modStart, modEnd, MD_MAX72XX::UPDATE, MD_MAX72XX::ON);
 }
 
+
 void checkInput()
 {
+	// buttons
 	unsigned long tempTime = millis();
 	int buttonStateTemp = digitalRead(buttonPin1);
 	if (buttonStateTemp == LOW and buttonStateTemp != button1State)
@@ -136,7 +168,30 @@ void checkInput()
 		button2Time = tempTime;
 	} 
 	button2State = buttonStateTemp;
+
+	// IR
+	if (irrecv.decode(&results)) {
+		switch (results.value)
+		{
+		case PWR:
+			reset();
+			break;
+
+		case FOREWARD:
+			playerGetPoint(1);
+			break;
+
+		case BACK:
+			playerGetPoint(0);
+			break;
+		
+		default:
+			break;
+		} 
+		irrecv.resume(); // Receive the next value
+  	}
 }
+
 
 void playerGetSetPoint(int playerID)
 {
@@ -153,6 +208,7 @@ void playerGetSetPoint(int playerID)
 		newMessageAvailable = true; 
 	}
 }
+
 
 void playerGetPoint(int playerID)
 {
@@ -176,10 +232,22 @@ void playerGetPoint(int playerID)
 	}
 }
 
+
+void reset()
+{
+	pointsP1 = 0;
+	pointsP2 = 0;
+	gamePointsP1 = 0;
+	gamePointsP2 = 0;
+	newMessageAvailable = true;
+}
+
+
 void setup()
 {
 	pinMode(buttonPin1, INPUT_PULLUP);
 	mx.begin();
+	irrecv.enableIRIn(); // Start the receiver
 	sprintf(message, "%02d : %02d", pointsP1, pointsP2);
 	printText(0, MAX_DEVICES-1, message);
 }
