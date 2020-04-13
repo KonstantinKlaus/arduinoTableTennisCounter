@@ -10,13 +10,13 @@
 #define MAX_DEVICES 4
 
 #define CLK_PIN   13  // or SCK
-#define DATA_PIN  11  // or MOSI
-#define CS_PIN    10  // or SS
+#define DATA_PIN  12  // or MOSI
+#define CS_PIN    11  // or SS
 
 // SPI hardware interface
-MD_MAX72XX mx = MD_MAX72XX(HARDWARE_TYPE, CS_PIN, MAX_DEVICES);
+//MD_MAX72XX mx = MD_MAX72XX(HARDWARE_TYPE, CS_PIN, MAX_DEVICES);
 // Arbitrary pins
-//MD_MAX72XX mx = MD_MAX72XX(HARDWARE_TYPE, DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
+MD_MAX72XX mx = MD_MAX72XX(HARDWARE_TYPE, DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
 
 // Text parameters
 #define CHAR_SPACING  1 // pixels between characters
@@ -73,11 +73,20 @@ int pointsP2 = 0;
 int gamePointsP1 = 0;
 int gamePointsP2 = 0;
 
+// last state
+int prevPointsP1 = 0;
+int prevPointsP2 = 0;
+
+int prevGamePointsP1 = 0;
+int prevGamePointsP2 = 0;
+
 // function prototypes
 void printText(uint8_t modStart, uint8_t modEnd, char *pMsg);
 void checkInput();
 void playerGetPoint(int playerID);
-void reset();
+void resetGame();
+void revertGame();
+void backupGameState();
 
 
 // Print the text string to the LED matrix modules specified.
@@ -174,7 +183,7 @@ void checkInput()
 		switch (results.value)
 		{
 		case PWR:
-			reset();
+			resetGame();
 			break;
 
 		case FOREWARD:
@@ -183,6 +192,10 @@ void checkInput()
 
 		case BACK:
 			playerGetPoint(0);
+			break;
+
+		case EQ:
+			revertGame();
 			break;
 		
 		default:
@@ -212,6 +225,7 @@ void playerGetSetPoint(int playerID)
 
 void playerGetPoint(int playerID)
 {
+	backupGameState();
 	if (playerID == 0)
 	{
 		pointsP1 = pointsP1 + 1;
@@ -233,12 +247,32 @@ void playerGetPoint(int playerID)
 }
 
 
-void reset()
+void resetGame()
 {
+	backupGameState();
 	pointsP1 = 0;
 	pointsP2 = 0;
 	gamePointsP1 = 0;
 	gamePointsP2 = 0;
+	newMessageAvailable = true;
+}
+
+
+void backupGameState()
+{
+	prevPointsP1 = pointsP1;
+	prevPointsP2 = pointsP2;
+	prevGamePointsP1 = gamePointsP1;
+	prevGamePointsP2 = gamePointsP2;
+}
+
+
+void revertGame()
+{
+	pointsP1 = prevPointsP1;
+	pointsP2 = prevPointsP2;
+	gamePointsP1 = prevGamePointsP1;
+	gamePointsP2 = prevGamePointsP2;
 	newMessageAvailable = true;
 }
 
