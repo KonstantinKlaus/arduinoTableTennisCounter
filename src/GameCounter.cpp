@@ -25,10 +25,17 @@ MD_MAX72XX mx = MD_MAX72XX(HARDWARE_TYPE, CS_PIN, MAX_DEVICES);
 char message[BUF_SIZE];
 bool newMessageAvailable = true;
 
-// button
-const int buttonPin = 0;
-int buttonState = HIGH;
-int buttonStateTemp;
+// buttons
+const int buttonIntervall = 300;
+
+const int buttonPin1 = 0;
+int button1State = HIGH;
+unsigned long button1Time = 0;
+
+const int buttonPin2 = 1;
+int button2State = HIGH;
+unsigned long button2Time = 0;
+
 
 // game points
 int pointsP1 = 0;
@@ -107,12 +114,28 @@ void printText(uint8_t modStart, uint8_t modEnd, char *pMsg)
 
 void checkInput()
 {
-	buttonStateTemp = digitalRead(buttonPin);
-	if (buttonStateTemp == LOW and buttonStateTemp != buttonState) 
+	unsigned long tempTime = millis();
+	int buttonStateTemp = digitalRead(buttonPin1);
+	if (buttonStateTemp == LOW and buttonStateTemp != button1State)
 	{
-		playerGetPoint(0);
+		if (tempTime - button1Time > buttonIntervall)
+		{
+			playerGetPoint(0);
+		}
+		button1Time = tempTime;
 	} 
-	buttonState = buttonStateTemp;
+	button1State = buttonStateTemp;
+
+	buttonStateTemp = digitalRead(buttonPin2);
+	if (buttonStateTemp == LOW and buttonStateTemp != button2State)
+	{
+		if (tempTime - button2Time > buttonIntervall)
+		{
+			playerGetPoint(1);
+		}
+		button2Time = tempTime;
+	} 
+	button2State = buttonStateTemp;
 }
 
 void playerGetSetPoint(int playerID)
@@ -155,7 +178,7 @@ void playerGetPoint(int playerID)
 
 void setup()
 {
-	pinMode(buttonPin, INPUT_PULLUP);
+	pinMode(buttonPin1, INPUT_PULLUP);
 	mx.begin();
 	sprintf(message, "%02d : %02d", pointsP1, pointsP2);
 	printText(0, MAX_DEVICES-1, message);
