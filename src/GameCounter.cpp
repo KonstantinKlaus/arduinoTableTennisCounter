@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <MD_MAX72xx.h>
 #include <IRremote.h>
+#include <Game.h>
 
 
 // Define the number of devices we have in the chain and the hardware interface
@@ -24,7 +25,6 @@ MD_MAX72XX mx = MD_MAX72XX(HARDWARE_TYPE, DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES
 // Global message buffers shared by Serial and Scrolling functions
 #define BUF_SIZE  30
 char message[BUF_SIZE];
-bool newMessageAvailable = true;
 
 // buttons
 const int buttonIntervall = 300;
@@ -66,27 +66,12 @@ decode_results results;
 #define NUM_9       0xFF52AD       
 
 
-// game points
-int pointsP1 = 0;
-int pointsP2 = 0;
-
-int gamePointsP1 = 0;
-int gamePointsP2 = 0;
-
-// last state
-int prevPointsP1 = 0;
-int prevPointsP2 = 0;
-
-int prevGamePointsP1 = 0;
-int prevGamePointsP2 = 0;
+//game
+Game game = Game();
 
 // function prototypes
 void printText(uint8_t modStart, uint8_t modEnd, char *pMsg);
 void checkInput();
-void playerGetPoint(int playerID);
-void resetGame();
-void revertGame();
-void backupGameState();
 
 
 // Print the text string to the LED matrix modules specified.
@@ -161,7 +146,7 @@ void checkInput()
 	{
 		if (tempTime - button1Time > buttonIntervall)
 		{
-			playerGetPoint(0);
+			game.playerGetPoint(0);
 		}
 		button1Time = tempTime;
 	} 
@@ -172,7 +157,7 @@ void checkInput()
 	{
 		if (tempTime - button2Time > buttonIntervall)
 		{
-			playerGetPoint(1);
+			game.playerGetPoint(1);
 		}
 		button2Time = tempTime;
 	} 
@@ -183,19 +168,19 @@ void checkInput()
 		switch (results.value)
 		{
 		case PWR:
-			resetGame();
+			game.resetGame();
 			break;
 
 		case FOREWARD:
-			playerGetPoint(1);
+			game.playerGetPoint(1);
 			break;
 
 		case BACK:
-			playerGetPoint(0);
+			game.playerGetPoint(0);
 			break;
 
 		case EQ:
-			revertGame();
+			game.revertGame();
 			break;
 		
 		default:
@@ -206,75 +191,7 @@ void checkInput()
 }
 
 
-void playerGetSetPoint(int playerID)
-{
-    pointsP1 = 0;
-    pointsP2 = 0;
-	if (playerID == 0)
-	{
-		gamePointsP1 = gamePointsP1 + 1;
-		newMessageAvailable = true;
 
-	} else if (playerID == 1)
-	{
-		gamePointsP2 = gamePointsP2 + 1;
-		newMessageAvailable = true; 
-	}
-}
-
-
-void playerGetPoint(int playerID)
-{
-	backupGameState();
-	if (playerID == 0)
-	{
-		pointsP1 = pointsP1 + 1;
-		newMessageAvailable = true;
-
-		if (pointsP1 > 10 and (pointsP1 - pointsP2) > 1)
-		{
-			playerGetSetPoint(0);
-		} 
-	} else if (playerID == 1)
-	{
-		pointsP2 = pointsP2 + 1;
-		newMessageAvailable = true; 
-		if (pointsP2 > 10 and (pointsP2 - pointsP1) > 1)
-		{
-			playerGetSetPoint(1);
-		} 
-	}
-}
-
-
-void resetGame()
-{
-	backupGameState();
-	pointsP1 = 0;
-	pointsP2 = 0;
-	gamePointsP1 = 0;
-	gamePointsP2 = 0;
-	newMessageAvailable = true;
-}
-
-
-void backupGameState()
-{
-	prevPointsP1 = pointsP1;
-	prevPointsP2 = pointsP2;
-	prevGamePointsP1 = gamePointsP1;
-	prevGamePointsP2 = gamePointsP2;
-}
-
-
-void revertGame()
-{
-	pointsP1 = prevPointsP1;
-	pointsP2 = prevPointsP2;
-	gamePointsP1 = prevGamePointsP1;
-	gamePointsP2 = prevGamePointsP2;
-	newMessageAvailable = true;
-}
 
 
 void setup()
@@ -282,7 +199,7 @@ void setup()
 	pinMode(buttonPin1, INPUT_PULLUP);
 	mx.begin();
 	irrecv.enableIRIn(); // Start the receiver
-	sprintf(message, "%02d : %02d", pointsP1, pointsP2);
+	sprintf(message, "%02d : %02d", game.getPoints(0), game.getPoints(1));
 	printText(0, MAX_DEVICES-1, message);
 }
 
@@ -290,10 +207,10 @@ void setup()
 void loop()
 {
 	checkInput();
-	if (newMessageAvailable)
+	if (game.isUpdateAvailible())
 	{
-		sprintf(message, "%02d : %02d", pointsP1, pointsP2);
+		sprintf(message, "%02d : %02d", game.getPoints(0), game.getPoints(1));
 		printText(0, MAX_DEVICES-1, message);
-		newMessageAvailable = false;
+		game.resetUpdate();
 	}
 }
