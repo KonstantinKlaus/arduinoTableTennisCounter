@@ -16,8 +16,9 @@ void setupInput()
 	irrecv.enableIRIn(); // Start the receiver
 }
 
-void checkInput(Game & game)
+int checkInput()
 {
+	int retval = NO_INPUT;
 	// buttons
 	unsigned long tempTime = millis();
 	int buttonStateTemp = digitalRead(buttonPin1);
@@ -25,7 +26,7 @@ void checkInput(Game & game)
 	{
 		if (tempTime - button1Time > buttonIntervall)
 		{
-			game.playerGetPoint(0);
+			retval = POINT_P1;
 		}
 		button1Time = tempTime;
 	} 
@@ -36,7 +37,7 @@ void checkInput(Game & game)
 	{
 		if (tempTime - button2Time > buttonIntervall)
 		{
-			game.playerGetPoint(1);
+			retval = POINT_P2;
 		}
 		button2Time = tempTime;
 	} 
@@ -47,19 +48,19 @@ void checkInput(Game & game)
 		switch (results.value)
 		{
 		case PWR:
-			game.resetGame();
+			retval = RESET;
 			break;
-
+ 
 		case FOREWARD:
-			game.playerGetPoint(1);
+			retval = POINT_P2;
 			break;
 
 		case BACK:
-			game.playerGetPoint(0);
+			retval = POINT_P1;
 			break;
 
 		case EQ:
-			game.revertGame();
+			retval = REVERT;
 			break;
 		
 		default:
@@ -67,4 +68,6 @@ void checkInput(Game & game)
 		} 
 		irrecv.resume(); // Receive the next value
   	}
+	
+	return retval;
 }

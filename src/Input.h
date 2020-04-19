@@ -3,7 +3,6 @@
 
 #include <Arduino.h>
 #include <IRremote.h>
-#include <Game.h>
 
 // buttons
 const int buttonIntervall = 300;
@@ -40,7 +39,15 @@ const int irPin = 5;
 #define NUM_8       0xFF4AB5
 #define NUM_9       0xFF52AD 
 
+// IR Remote Keys
+#define NO_INPUT 	0
+#define POINT_P1    1
+#define POINT_P2    2
+#define REVERT      3
+#define RESET       4
+
+
 void setupInput();
-void checkInput(Game & game);
+int checkInput();
 
 #endif
