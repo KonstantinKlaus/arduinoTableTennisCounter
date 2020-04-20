@@ -45,6 +45,7 @@ const int irPin = 5;
 #define POINT_P2    2
 #define REVERT      3
 #define RESET       4
+#define CHANGEOVER  5
 
 
 void setupInput();

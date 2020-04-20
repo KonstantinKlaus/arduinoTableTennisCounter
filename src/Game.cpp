@@ -9,14 +9,14 @@ void Game::playerGetSetPoint(int playerID)
 {
     pointsP1 = 0;
     pointsP2 = 0;
-	if (playerID == 0)
+	if (playerID == PLAYER_1)
 	{
-		gamePointsP1 = gamePointsP1 + 1;
+		setPointsP1 = setPointsP1 + 1;
 		updated = true;
 
-	} else if (playerID == 1)
+	} else if (playerID == PLAYER_2)
 	{
-		gamePointsP2 = gamePointsP2 + 1;
+		setPointsP2 = setPointsP2 + 1;
 		updated = true; 
 	}
 }
@@ -25,7 +25,7 @@ void Game::playerGetSetPoint(int playerID)
 void Game::playerGetPoint(int playerID)
 {
 	backupGameState();
-	if (playerID == 0)
+	if (playerID == PLAYER_1)
 	{
 		pointsP1 = pointsP1 + 1;
 		updated = true;
@@ -34,7 +34,7 @@ void Game::playerGetPoint(int playerID)
 		{
 			playerGetSetPoint(0);
 		} 
-	} else if (playerID == 1)
+	} else if (playerID == PLAYER_2)
 	{
 		pointsP2 = pointsP2 + 1;
 		updated = true; 
@@ -51,8 +51,8 @@ void Game::resetGame()
 	backupGameState();
 	pointsP1 = 0;
 	pointsP2 = 0;
-	gamePointsP1 = 0;
-	gamePointsP2 = 0;
+	setPointsP1 = 0;
+	setPointsP2 = 0;
 	updated = true;
 }
 
@@ -61,8 +61,8 @@ void Game::backupGameState()
 {
 	prevPointsP1 = pointsP1;
 	prevPointsP2 = pointsP2;
-	prevGamePointsP1 = gamePointsP1;
-	prevGamePointsP2 = gamePointsP2;
+	prevSetPointsP2 = setPointsP2;
+	prevSetPointsP1 = setPointsP1;
 }
 
 
@@ -70,8 +70,8 @@ void Game::revertGame()
 {
 	pointsP1 = prevPointsP1;
 	pointsP2 = prevPointsP2;
-	gamePointsP1 = prevGamePointsP1;
-	gamePointsP2 = prevGamePointsP2;
+	setPointsP1 = prevSetPointsP1;
+	setPointsP2 = prevSetPointsP2;
 	updated = true;
 }
 
@@ -90,12 +90,28 @@ void Game::resetUpdate()
 
 int Game::getPoints(int playerID)
 {
-    if (playerID == 0)
+    if (playerID == PLAYER_1)
     {
         return pointsP1;
-    } else if (playerID == 1)
+    } else if (playerID == PLAYER_2)
     {
         return pointsP2;
+    } else
+    {
+       return 0;
+    }
+    
+}
+
+
+int Game::getSetPoints(int playerID)
+{
+    if (playerID == PLAYER_1)
+    {
+        return setPointsP1;
+    } else if (playerID == PLAYER_2)
+    {
+        return setPointsP2;
     } else
     {
        return 0;

@@ -62,6 +62,10 @@ int checkInput()
 		case EQ:
 			retval = REVERT;
 			break;
+
+		case PLAY:
+			retval = CHANGEOVER;
+			break;
 		
 		default:
 			break;
