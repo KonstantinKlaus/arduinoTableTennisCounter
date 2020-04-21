@@ -3,8 +3,6 @@
 class Game
 {
 private:
-    // update availible
-    bool updated = false;
 
     // game points
     int pointsP1 = 0;
@@ -20,16 +18,15 @@ private:
     int prevSetPointsP1 = 0;
     int prevSetPointsP2 = 0;
 
+    // right of service
+    int rightOfService = PLAYER_1;
+
 public:
 
     static const int PLAYER_1 = 0;
     static const int PLAYER_2 = 1;
 
     Game();
-
-    void resetUpdate();
-
-    bool isUpdateAvailible();
 
     void playerGetPoint(int playerID);
 

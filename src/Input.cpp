@@ -26,7 +26,7 @@ int checkInput()
 	{
 		if (tempTime - button1Time > buttonIntervall)
 		{
-			retval = POINT_P1;
+			retval = BUTTON_1;
 		}
 		button1Time = tempTime;
 	} 
@@ -37,7 +37,7 @@ int checkInput()
 	{
 		if (tempTime - button2Time > buttonIntervall)
 		{
-			retval = POINT_P2;
+			retval = BUTTON_2;
 		}
 		button2Time = tempTime;
 	} 
@@ -47,24 +47,24 @@ int checkInput()
 	if (irrecv.decode(&results)) {
 		switch (results.value)
 		{
-		case PWR:
-			retval = RESET;
+		case IR_PWR:
+			retval = PWR;
 			break;
  
-		case FOREWARD:
-			retval = POINT_P2;
+		case IR_FOREWARD:
+			retval = FOREWARD;
 			break;
 
-		case BACK:
-			retval = POINT_P1;
+		case IR_BACK:
+			retval = BACK;
 			break;
 
-		case EQ:
-			retval = REVERT;
+		case IR_EQ:
+			retval = EQ;
 			break;
 
-		case PLAY:
-			retval = CHANGEOVER;
+		case IR_PLAY:
+			retval = PLAY;
 			break;
 		
 		default:

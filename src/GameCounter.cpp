@@ -12,6 +12,7 @@ Game game = Game();
 int playerLeft;
 int playerRight;
 
+bool updateDisplay = false;
 
 char message[BUF_SIZE];
 
@@ -44,24 +45,31 @@ void loop()
 
 	switch (input_state)
 	{
-		case RESET:
+		case PWR:
 			game.resetGame();
+			updateDisplay = true;
 			break;
 
-		case REVERT:
+		case EQ:
 			game.revertGame();
+			updateDisplay = true;
 			break;
 
-		case POINT_P1:
-			game.playerGetPoint(Game::PLAYER_1);
+		case BUTTON_2:
+		case FOREWARD:
+			game.playerGetPoint(playerRight);
+			updateDisplay = true;
 			break;
 
-		case POINT_P2:
-			game.playerGetPoint(Game::PLAYER_2);
+		case BUTTON_1:
+		case BACK:
+			game.playerGetPoint(playerLeft);
+			updateDisplay = true;
 			break;
 
-		case CHANGEOVER:
+		case PLAY:
 			changeover();
+			updateDisplay = true;
 			break;
 		
 		default:
@@ -69,10 +77,10 @@ void loop()
 	} 
 
 	// change output
-	if (game.isUpdateAvailible())
+	if (updateDisplay)
 	{
 		sprintf(message, "%02d : %02d", game.getPoints(playerLeft), game.getPoints(playerRight));
 		printText(0, MAX_DEVICES-1, message);
-		game.resetUpdate();
+		updateDisplay = false;
 	}
 }

@@ -12,12 +12,10 @@ void Game::playerGetSetPoint(int playerID)
 	if (playerID == PLAYER_1)
 	{
 		setPointsP1 = setPointsP1 + 1;
-		updated = true;
 
 	} else if (playerID == PLAYER_2)
 	{
 		setPointsP2 = setPointsP2 + 1;
-		updated = true; 
 	}
 }
 
@@ -28,7 +26,6 @@ void Game::playerGetPoint(int playerID)
 	if (playerID == PLAYER_1)
 	{
 		pointsP1 = pointsP1 + 1;
-		updated = true;
 
 		if (pointsP1 > 10 and (pointsP1 - pointsP2) > 1)
 		{
@@ -37,7 +34,6 @@ void Game::playerGetPoint(int playerID)
 	} else if (playerID == PLAYER_2)
 	{
 		pointsP2 = pointsP2 + 1;
-		updated = true; 
 		if (pointsP2 > 10 and (pointsP2 - pointsP1) > 1)
 		{
 			playerGetSetPoint(1);
@@ -53,7 +49,6 @@ void Game::resetGame()
 	pointsP2 = 0;
 	setPointsP1 = 0;
 	setPointsP2 = 0;
-	updated = true;
 }
 
 
@@ -72,19 +67,6 @@ void Game::revertGame()
 	pointsP2 = prevPointsP2;
 	setPointsP1 = prevSetPointsP1;
 	setPointsP2 = prevSetPointsP2;
-	updated = true;
-}
-
-
-bool Game::isUpdateAvailible()
-{
-	return updated;
-}
-
-
-void Game::resetUpdate()
-{
-	updated = false;
 }
 
 
