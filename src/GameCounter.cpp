@@ -1,6 +1,4 @@
 #include <Arduino.h>
-#include <MD_MAX72xx.h>
-#include <IRremote.h>
 #include <Game.h>
 #include <Input.h>
 #include <Output.h>
@@ -30,7 +28,9 @@ void setup()
 	setupOutput();
 	
 	sprintf(message, "%02d : %02d", game.getPoints(PLAYER_1), game.getPoints(PLAYER_2));
-	printText(0, MAX_DEVICES-1, message);
+	printTextDisplay1(message);
+	sprintf(message, "_%01d : %01d_", game.getSetPoints(playerLeft), game.getSetPoints(playerRight));
+	printTextDisplay2(message);
 
 	playerLeft  = PLAYER_1;
 	playerRight = PLAYER_2;
@@ -76,7 +76,11 @@ void loop()
 	if (updateDisplay)
 	{
 		sprintf(message, "%02d : %02d", game.getPoints(playerLeft), game.getPoints(playerRight));
-		printText(0, MAX_DEVICES-1, message);
+		printTextDisplay1(message);
+
+		sprintf(message, "_%01d : %01d_", game.getSetPoints(playerLeft), game.getSetPoints(playerRight));
+		printTextDisplay2(message);
+
 		updateDisplay = false;
 	}
 }

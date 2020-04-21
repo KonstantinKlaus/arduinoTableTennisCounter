@@ -14,6 +14,11 @@
 #define CS_PIN    11  // or SS
 
 
+#define CLK_PIN_2   9  // or SCK
+#define DATA_PIN_2  8  // or MOSI
+#define CS_PIN_2    7  // or SS
+
+
 
 // Text parameters
 #define CHAR_SPACING  1 // pixels between characters
@@ -23,6 +28,7 @@
 
 
 void setupOutput();
-void printText(uint8_t modStart, uint8_t modEnd, char *pMsg);
+void printTextDisplay1(char *pMsg);
+void printTextDisplay2(char *pMsg);
 
 #endif

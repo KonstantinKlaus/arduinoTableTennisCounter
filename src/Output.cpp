@@ -4,15 +4,31 @@
 //MD_MAX72XX mx = MD_MAX72XX(HARDWARE_TYPE, CS_PIN, MAX_DEVICES);
 // Arbitrary pins
 MD_MAX72XX mx = MD_MAX72XX(HARDWARE_TYPE, DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
+MD_MAX72XX mx2 = MD_MAX72XX(HARDWARE_TYPE, DATA_PIN_2, CLK_PIN_2, CS_PIN_2, MAX_DEVICES);
+
+void printText(MD_MAX72XX & mx, uint8_t modStart, uint8_t modEnd, char *pMsg);
 
 void setupOutput()
 {
     mx.begin();
+	mx2.begin();
 }
 
 // Print the text string to the LED matrix modules specified.
 // Message area is padded with blank columns after printing.
-void printText(uint8_t modStart, uint8_t modEnd, char *pMsg)
+void printTextDisplay1(char *pMsg)
+{
+	printText(mx, 0, MAX_DEVICES - 1, pMsg);
+}
+
+void printTextDisplay2(char *pMsg)
+{
+	printText(mx2, 0, MAX_DEVICES - 1, pMsg);
+}
+
+
+
+void printText(MD_MAX72XX & mx, uint8_t modStart, uint8_t modEnd, char *pMsg)
 {
 	uint8_t   state = 0;
 	uint8_t   curLen;
