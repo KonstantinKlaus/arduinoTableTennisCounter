@@ -1,5 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
+
+enum player {PLAYER_1, PLAYER_2};
+
 class Game
 {
 private:
@@ -19,16 +22,13 @@ private:
     int prevSetPointsP2 = 0;
 
     // right of service
-    int rightOfService = PLAYER_1;
+    player rightOfService = PLAYER_1;
 
 public:
 
-    static const int PLAYER_1 = 0;
-    static const int PLAYER_2 = 1;
-
     Game();
 
-    void playerGetPoint(int playerID);
+    void playerGetPoint(player player);
 
     void resetGame();
 
@@ -36,11 +36,11 @@ public:
 
     void backupGameState();
 
-    void playerGetSetPoint(int playerID);
+    void playerGetSetPoint(player player);
 
-    int getPoints(int playerID);
+    int getPoints(player player);
 
-    int getSetPoints(int playerID);
+    int getSetPoints(player player);
 };
 
 #endif

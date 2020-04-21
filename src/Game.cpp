@@ -5,38 +5,38 @@ Game::Game()
 
 }
 
-void Game::playerGetSetPoint(int playerID)
+void Game::playerGetSetPoint(player player)
 {
     pointsP1 = 0;
     pointsP2 = 0;
-	if (playerID == PLAYER_1)
+	if (player == PLAYER_1)
 	{
 		setPointsP1 = setPointsP1 + 1;
 
-	} else if (playerID == PLAYER_2)
+	} else if (player == PLAYER_2)
 	{
 		setPointsP2 = setPointsP2 + 1;
 	}
 }
 
 
-void Game::playerGetPoint(int playerID)
+void Game::playerGetPoint(player player)
 {
 	backupGameState();
-	if (playerID == PLAYER_1)
+	if (player == PLAYER_1)
 	{
 		pointsP1 = pointsP1 + 1;
 
 		if (pointsP1 > 10 and (pointsP1 - pointsP2) > 1)
 		{
-			playerGetSetPoint(0);
+			playerGetSetPoint(PLAYER_1);
 		} 
-	} else if (playerID == PLAYER_2)
+	} else if (player == PLAYER_2)
 	{
 		pointsP2 = pointsP2 + 1;
 		if (pointsP2 > 10 and (pointsP2 - pointsP1) > 1)
 		{
-			playerGetSetPoint(1);
+			playerGetSetPoint(PLAYER_2);
 		} 
 	}
 }
@@ -70,12 +70,12 @@ void Game::revertGame()
 }
 
 
-int Game::getPoints(int playerID)
+int Game::getPoints(player player)
 {
-    if (playerID == PLAYER_1)
+    if (player == PLAYER_1)
     {
         return pointsP1;
-    } else if (playerID == PLAYER_2)
+    } else if (player == PLAYER_2)
     {
         return pointsP2;
     } else
@@ -86,12 +86,12 @@ int Game::getPoints(int playerID)
 }
 
 
-int Game::getSetPoints(int playerID)
+int Game::getSetPoints(player player)
 {
-    if (playerID == PLAYER_1)
+    if (player == PLAYER_1)
     {
         return setPointsP1;
-    } else if (playerID == PLAYER_2)
+    } else if (player == PLAYER_2)
     {
         return setPointsP2;
     } else
