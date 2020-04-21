@@ -7,6 +7,8 @@ class Game
 {
 private:
 
+    // variables
+
     // game points
     int pointsP1 = 0;
     int pointsP2 = 0;
@@ -23,8 +25,15 @@ private:
 
     // right of service
     player rightOfService = PLAYER_1;
+    player prevRightOfService = PLAYER_1;
+
+    // functions
+
+    void switchRightOfService();
 
 public:
+
+    // functions
 
     Game();
 
@@ -41,6 +50,8 @@ public:
     int getPoints(player player);
 
     int getSetPoints(player player);
+
+    player getServingPlayer();
 };
 
 #endif

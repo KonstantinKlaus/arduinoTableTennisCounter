@@ -39,6 +39,12 @@ void Game::playerGetPoint(player player)
 			playerGetSetPoint(PLAYER_2);
 		} 
 	}
+
+	// every two point, right of service switches
+	if ((pointsP1 + pointsP2) % 2 == 0)
+	{
+		switchRightOfService();
+	} 
 }
 
 
@@ -49,6 +55,7 @@ void Game::resetGame()
 	pointsP2 = 0;
 	setPointsP1 = 0;
 	setPointsP2 = 0;
+	prevRightOfService = PLAYER_1;
 }
 
 
@@ -58,6 +65,7 @@ void Game::backupGameState()
 	prevPointsP2 = pointsP2;
 	prevSetPointsP2 = setPointsP2;
 	prevSetPointsP1 = setPointsP1;
+	prevRightOfService = rightOfService;
 }
 
 
@@ -67,6 +75,7 @@ void Game::revertGame()
 	pointsP2 = prevPointsP2;
 	setPointsP1 = prevSetPointsP1;
 	setPointsP2 = prevSetPointsP2;
+	rightOfService = prevRightOfService;
 }
 
 
@@ -99,4 +108,21 @@ int Game::getSetPoints(player player)
        return 0;
     }
     
+}
+
+
+player Game::getServingPlayer()
+{
+	return rightOfService;
+}
+
+
+void Game::switchRightOfService()
+{
+	if (rightOfService == PLAYER_1)
+	{
+		rightOfService = PLAYER_2;
+	} else {
+		rightOfService = PLAYER_1;
+	}
 }
