@@ -9,11 +9,11 @@ void Game::playerGetSetPoint(player player)
 {
     pointsP1 = 0;
     pointsP2 = 0;
-	if (player == PLAYER_1)
+	if (player == player_1)
 	{
 		setPointsP1 = setPointsP1 + 1;
 
-	} else if (player == PLAYER_2)
+	} else if (player == player_2)
 	{
 		setPointsP2 = setPointsP2 + 1;
 	}
@@ -23,20 +23,20 @@ void Game::playerGetSetPoint(player player)
 void Game::playerGetPoint(player player)
 {
 	backupGameState();
-	if (player == PLAYER_1)
+	if (player == player_1)
 	{
 		pointsP1 = pointsP1 + 1;
 
 		if (pointsP1 > 10 and (pointsP1 - pointsP2) > 1)
 		{
-			playerGetSetPoint(PLAYER_1);
+			playerGetSetPoint(player_1);
 		} 
-	} else if (player == PLAYER_2)
+	} else if (player == player_2)
 	{
 		pointsP2 = pointsP2 + 1;
 		if (pointsP2 > 10 and (pointsP2 - pointsP1) > 1)
 		{
-			playerGetSetPoint(PLAYER_2);
+			playerGetSetPoint(player_2);
 		} 
 	}
 
@@ -55,7 +55,7 @@ void Game::resetGame()
 	pointsP2 = 0;
 	setPointsP1 = 0;
 	setPointsP2 = 0;
-	prevRightOfService = PLAYER_1;
+	prevRightOfService = player_1;
 }
 
 
@@ -81,10 +81,10 @@ void Game::revertGame()
 
 int Game::getPoints(player player)
 {
-    if (player == PLAYER_1)
+    if (player == player_1)
     {
         return pointsP1;
-    } else if (player == PLAYER_2)
+    } else if (player == player_2)
     {
         return pointsP2;
     } else
@@ -97,10 +97,10 @@ int Game::getPoints(player player)
 
 int Game::getSetPoints(player player)
 {
-    if (player == PLAYER_1)
+    if (player == player_1)
     {
         return setPointsP1;
-    } else if (player == PLAYER_2)
+    } else if (player == player_2)
     {
         return setPointsP2;
     } else
@@ -119,10 +119,10 @@ player Game::getServingPlayer()
 
 void Game::switchRightOfService()
 {
-	if (rightOfService == PLAYER_1)
+	if (rightOfService == player_1)
 	{
-		rightOfService = PLAYER_2;
+		rightOfService = player_2;
 	} else {
-		rightOfService = PLAYER_1;
+		rightOfService = player_1;
 	}
 }

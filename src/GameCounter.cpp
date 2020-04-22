@@ -27,13 +27,14 @@ void setup()
 	setupInput();
 	setupOutput();
 	
-	sprintf(message, "%02d : %02d", game.getPoints(PLAYER_1), game.getPoints(PLAYER_2));
-	printTextDisplay1(message);
+	//sprintf(message, "%02d : %02d", game.getPoints(PLAYER_1), game.getPoints(PLAYER_2));
+	//printTextDisplay1(message);
+	printPointsDisplay1(0,0);
 	sprintf(message, "_%01d : %01d_", game.getSetPoints(playerLeft), game.getSetPoints(playerRight));
 	printTextDisplay2(message);
 
-	playerLeft  = PLAYER_1;
-	playerRight = PLAYER_2;
+	playerLeft  = player_1;
+	playerRight = player_2;
 }
 
 void loop()
@@ -75,8 +76,9 @@ void loop()
 	// change output
 	if (updateDisplay)
 	{
-		sprintf(message, "%02d : %02d", game.getPoints(playerLeft), game.getPoints(playerRight));
-		printTextDisplay1(message);
+		//sprintf(message, "%02d : %02d", game.getPoints(playerLeft), game.getPoints(playerRight));
+		//printTextDisplay1(message);
+		printPointsDisplay1(game.getPoints(playerLeft), game.getPoints(playerRight));
 
 		sprintf(message, "_%01d : %01d_", game.getSetPoints(playerLeft), game.getSetPoints(playerRight));
 		printTextDisplay2(message);

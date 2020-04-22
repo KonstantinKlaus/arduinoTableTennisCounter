@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-enum player {PLAYER_1, PLAYER_2};
+enum player {player_1, player_2};
 
 class Game
 {
@@ -24,8 +24,8 @@ private:
     int prevSetPointsP2 = 0;
 
     // right of service
-    player rightOfService = PLAYER_1;
-    player prevRightOfService = PLAYER_1;
+    player rightOfService = player_1;
+    player prevRightOfService = player_1;
 
     // functions
 

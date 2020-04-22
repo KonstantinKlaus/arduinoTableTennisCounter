@@ -18,7 +18,7 @@
 #define DATA_PIN_2  8  // or MOSI
 #define CS_PIN_2    7  // or SS
 
-
+enum position {left, right};
 
 // Text parameters
 #define CHAR_SPACING  1 // pixels between characters
@@ -29,6 +29,7 @@
 
 void setupOutput();
 void printTextDisplay1(char *pMsg);
+void printPointsDisplay1(int pointP1, int pointsP2);
 void printTextDisplay2(char *pMsg);
 
 #endif
