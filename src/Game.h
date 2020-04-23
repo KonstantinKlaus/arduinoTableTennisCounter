@@ -3,11 +3,15 @@
 
 enum player {player_1, player_2};
 
+enum gameState {player1Wins, player2Wins, running};
+
 class Game
 {
 private:
 
     // variables
+    gameState curState = running;
+    gameState prevState = running;
 
     // game points
     int pointsP1 = 0;
@@ -52,6 +56,8 @@ public:
     int getSetPoints(player player);
 
     player getServingPlayer();
+
+    gameState getState();
 };
 
 #endif

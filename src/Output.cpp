@@ -122,7 +122,7 @@ void printPointsDisplay1(int pointsLeftPlayer, int pointsRightPlayer)
 			break;
 		
 		case 1:
-			temp = pointsLeftPlayer;
+			temp = pointsLeftPlayer % 10;
 			break;
 
 		case 2:
@@ -130,7 +130,7 @@ void printPointsDisplay1(int pointsLeftPlayer, int pointsRightPlayer)
 			break;
 		
 		default:
-			temp = pointsRightPlayer;
+			temp = pointsRightPlayer % 10;
 			break;		
 		}
 
@@ -146,24 +146,24 @@ void printPointsDisplay1(int pointsLeftPlayer, int pointsRightPlayer)
 }
 
 
-void printSetPointsDisplay1(int setPointsLeftPlayer, int setPointsRightPlayer, position rightOfService)
+void printSetPointsDisplay2(int setPointsLeftPlayer, int setPointsRightPlayer, position rightOfService)
 {
 
 	uint16_t  showLen;
 	uint8_t   cBuf[8];
 	char character[2];
 
-	mx.control(0, 3, MD_MAX72XX::UPDATE, MD_MAX72XX::OFF);
+	mx2.control(0, 3, MD_MAX72XX::UPDATE, MD_MAX72XX::OFF);
 
 	// reset all columns
 	for (int i = 0; i < 32; ++i)
   	{
-    	mx.setColumn(i, 0);
+    	mx2.setColumn(i, 0);
   	}
 	
 	// colon
-	mx.setColumn(15, 108);
-	mx.setColumn(16, 108);
+	mx2.setColumn(15, 108);
+	mx2.setColumn(16, 108);
 
 	// for generating numbers
 	int temp;
@@ -174,7 +174,7 @@ void printSetPointsDisplay1(int setPointsLeftPlayer, int setPointsRightPlayer, p
 		switch (j)
 		{
 		case 0:
-			temp = setPointsLeftPlayer / 10;
+			temp = setPointsLeftPlayer;
 			break;
 		
 		default:
@@ -186,14 +186,28 @@ void printSetPointsDisplay1(int setPointsLeftPlayer, int setPointsRightPlayer, p
 		showLen = mx.getChar(*character, sizeof(cBuf)/sizeof(cBuf[0]), cBuf);
 		for (uint8_t i = 0; i < showLen; ++i)
 		{
-			mx.setColumn(positions[j] - i, cBuf[i]);
+			mx2.setColumn(positions[j] - i, cBuf[i]);
 		} 
   	} 
 
-	if (rightOfService = left)
+	if (rightOfService == left)
 	{
-		
+		sprintf(character, "<", temp);
+		showLen = mx.getChar(*character, sizeof(cBuf)/sizeof(cBuf[0]), cBuf);
+		for (uint8_t i = 0; i < showLen; ++i)
+		{
+			mx2.setColumn(31 - i, cBuf[i]);
+		} 
+	} else
+	{
+		sprintf(character, ">", temp);
+		showLen = mx.getChar(*character, sizeof(cBuf)/sizeof(cBuf[0]), cBuf);
+		for (uint8_t i = 0; i < showLen; ++i)
+		{
+			mx2.setColumn(2 - i, cBuf[i]);
+		} 
 	}
+	
 
-	mx.control(0, 3, MD_MAX72XX::UPDATE, MD_MAX72XX::ON);
+	mx2.control(0, 3, MD_MAX72XX::UPDATE, MD_MAX72XX::ON);
 }

@@ -31,5 +31,6 @@ void setupOutput();
 void printTextDisplay1(char *pMsg);
 void printPointsDisplay1(int pointP1, int pointsP2);
 void printTextDisplay2(char *pMsg);
+void printSetPointsDisplay2(int setPointsLeftPlayer, int setPointsRightPlayer, position rightOfService);
 
 #endif

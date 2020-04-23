@@ -26,15 +26,14 @@ void setup()
 {
 	setupInput();
 	setupOutput();
-	
-	//sprintf(message, "%02d : %02d", game.getPoints(PLAYER_1), game.getPoints(PLAYER_2));
-	//printTextDisplay1(message);
-	printPointsDisplay1(0,0);
-	sprintf(message, "_%01d : %01d_", game.getSetPoints(playerLeft), game.getSetPoints(playerRight));
-	printTextDisplay2(message);
 
 	playerLeft  = player_1;
 	playerRight = player_2;
+
+	printPointsDisplay1(0, 0);
+
+	sprintf(message, "P1 : P2");
+	printTextDisplay2(message);
 }
 
 void loop()
@@ -76,13 +75,38 @@ void loop()
 	// change output
 	if (updateDisplay)
 	{
-		//sprintf(message, "%02d : %02d", game.getPoints(playerLeft), game.getPoints(playerRight));
-		//printTextDisplay1(message);
-		printPointsDisplay1(game.getPoints(playerLeft), game.getPoints(playerRight));
+		if (game.getState() == running)
+		{
+			printPointsDisplay1(game.getPoints(playerLeft), game.getPoints(playerRight));
 
-		sprintf(message, "_%01d : %01d_", game.getSetPoints(playerLeft), game.getSetPoints(playerRight));
-		printTextDisplay2(message);
+			position rightOfService;
+			if (playerLeft == game.getServingPlayer()){
+				rightOfService = left;
+			} else
+			{
+				rightOfService = right;
+			}
+			
+			printSetPointsDisplay2(game.getSetPoints(playerLeft), game.getSetPoints(playerRight), rightOfService);
 
-		updateDisplay = false;
+			updateDisplay = false;
+		} else
+		{
+			if (game.getState() == player1Wins)
+			{
+				// P1 wins
+				sprintf(message, "P1 wins");
+				printTextDisplay1(message);
+				printTextDisplay2(message);
+			} else
+			{
+				// P2 wins
+				sprintf(message, "P2 wins");
+				printTextDisplay1(message);
+				printTextDisplay2(message);
+			}
+			
+		} 
+
 	}
 }
