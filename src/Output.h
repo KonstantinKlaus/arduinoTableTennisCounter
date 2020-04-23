@@ -20,6 +20,8 @@
 
 enum position {left, right};
 
+enum ledMatrix {display_1, display_2};
+
 // Text parameters
 #define CHAR_SPACING  1 // pixels between characters
 
@@ -28,9 +30,9 @@ enum position {left, right};
 
 
 void setupOutput();
-void printTextDisplay1(char *pMsg);
-void printPointsDisplay1(int pointP1, int pointsP2);
-void printTextDisplay2(char *pMsg);
-void printSetPointsDisplay2(int setPointsLeftPlayer, int setPointsRightPlayer, position rightOfService);
+void printText(ledMatrix display, char *pMsg);
+void printPoints(ledMatrix display, int pointP1, int pointsP2);
+void printSeparatedText(ledMatrix display, char *pMsg1, char *pMsg2);
+void printSetPoints(ledMatrix display, int setPointsLeftPlayer, int setPointsRightPlayer, position rightOfService);
 
 #endif
