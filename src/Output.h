@@ -32,7 +32,7 @@ enum ledMatrix {display_1, display_2};
 void setupOutput();
 void printText(ledMatrix display, char *pMsg);
 void printPoints(ledMatrix display, int pointP1, int pointsP2);
-void printSeparatedText(ledMatrix display, char *pMsg1, char *pMsg2);
+void printPlayerPosition(ledMatrix display, position player1Position);
 void printSetPoints(ledMatrix display, int setPointsLeftPlayer, int setPointsRightPlayer, position rightOfService);
 
 #endif

@@ -1,8 +1,6 @@
 #include <Output.h>
 
-// SPI hardware interface
-//MD_MAX72XX mx = MD_MAX72XX(HARDWARE_TYPE, CS_PIN, MAX_DEVICES);
-// Arbitrary pins
+// control instances for led matrices
 MD_MAX72XX mxLedMatrix_1 = MD_MAX72XX(HARDWARE_TYPE, DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
 MD_MAX72XX mxLedMatrix_2 = MD_MAX72XX(HARDWARE_TYPE, DATA_PIN_2, CLK_PIN_2, CS_PIN_2, MAX_DEVICES);
 
@@ -229,7 +227,74 @@ void printSetPoints(ledMatrix display, int setPointsLeftPlayer, int setPointsRig
 	(*mx).control(0, 3, MD_MAX72XX::UPDATE, MD_MAX72XX::ON);
 }
 
-void printSeparatedTextDisplay2(char *pMsg1, char *pMsg2)
+void printPlayerPosition(ledMatrix display, position player1Position)
 {
+MD_MAX72XX* mx;
 
+	if (display == display_1)
+	{
+		mx = &mxLedMatrix_1;
+	} else
+	{
+		mx = &mxLedMatrix_2;
+	}
+
+	uint16_t  showLen;
+	uint8_t   cBuf[8];
+	char character[2];
+
+	(*mx).control(0, 3, MD_MAX72XX::UPDATE, MD_MAX72XX::OFF);
+
+	// reset all columns
+	for (int i = 0; i < 32; ++i)
+  	{
+    	(*mx).setColumn(i, 0);
+  	}
+	
+	// colon
+	(*mx).setColumn(15, 108);
+	(*mx).setColumn(16, 108);
+
+	// for generating text on led matrix "P1 : P2"
+	int temp;
+	int positions[] = { 30, 24, 11, 5 };
+
+	for (int j = 0; j < 4; ++j)
+  	{
+		switch (j)
+		{
+			case 0:
+				sprintf(character, "P");
+				break;
+
+			case 1:
+				if (player1Position == left)
+				{
+					sprintf(character, "1");
+				} else {
+					sprintf(character, "2");
+				}			
+				break;
+
+			case 2:
+				sprintf(character, "P");
+				break;
+			
+			default:
+				if (player1Position == left)
+				{
+					sprintf(character, "2");
+				} else {
+					sprintf(character, "1");
+				}	
+				break;		
+		}
+		showLen = (*mx).getChar(*character, sizeof(cBuf)/sizeof(cBuf[0]), cBuf);
+		for (uint8_t i = 0; i < showLen; ++i)
+		{
+			(*mx).setColumn(positions[j] - i, cBuf[i]);
+		} 
+  	} 
+
+	(*mx).control(0, 3, MD_MAX72XX::UPDATE, MD_MAX72XX::ON);
 }

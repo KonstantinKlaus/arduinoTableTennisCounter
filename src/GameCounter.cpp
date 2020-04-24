@@ -3,16 +3,45 @@
 #include <Input.h>
 #include <Output.h>
 
+// * * * * * * * * * * * * * *
+// constants
+// * * * * * * * * * * * * * *
+
+// time between display 2 toggles content
+const long timeDisplayToggle = 5000; // 5 seconds
+
+// * * * * * * * * * * * * * *
+// global variables
+// * * * * * * * * * * * * * *
 
 // game
 Game game = Game();
 
+// player positions
 player playerLeft;
 player playerRight;
 
+// string buffer
 char message[BUF_SIZE];
 
+
+// LED matrix 2 - content 
+bool display2ShowPosition = true;
+
+// timer
+long timer;
+
+// * * * * * * * * * * * * * *
+// function prototypes
+// * * * * * * * * * * * * * *
+
 void changeover();
+
+
+// * * * * * * * * * * * * * *
+// functions
+// * * * * * * * * * * * * * *
+
 
 void changeover()
 {
@@ -22,6 +51,7 @@ void changeover()
 }
 
 
+// setup function, is called once on startup
 void setup()
 {
 	setupInput();
@@ -36,6 +66,8 @@ void setup()
 	printText(display_2, message);
 }
 
+
+// loop function, is repeated infinitely
 void loop()
 {
 	// check input
@@ -43,6 +75,7 @@ void loop()
 
 	bool updateDisplay = true;
 
+	// react on input
 	switch (input_state)
 	{
 		case PWR:
@@ -72,11 +105,15 @@ void loop()
 			break;
 	}
 
-	// change output
+	// update LED matrices if necessary
 	if (updateDisplay)
 	{
+		// check for time events
+		
+
 		if (game.getState() == running)
 		{
+			// LED matrix 1
 			printPoints(display_1, game.getPoints(playerLeft), game.getPoints(playerRight));
 
 			position rightOfService;
@@ -87,11 +124,26 @@ void loop()
 				rightOfService = right;
 			}
 			
-			printSetPoints(display_2, game.getSetPoints(playerLeft), game.getSetPoints(playerRight), rightOfService);
-
-			updateDisplay = false;
+			// LED matrix 2
+			if (display2ShowPosition)
+			{
+				// show player position
+				position p1Position;
+				if (playerLeft == player_1)
+				{
+					p1Position = left;
+				} else
+				{
+					p1Position = right;
+				}
+				printPlayerPosition(display_2, p1Position);
+			} else {
+				// show setPoints
+				printSetPoints(display_2, game.getSetPoints(playerLeft), game.getSetPoints(playerRight), rightOfService);
+			}
 		} else
 		{
+			// if game finished
 			if (game.getState() == player1Wins)
 			{
 				// P1 wins
@@ -107,6 +159,6 @@ void loop()
 			}
 			
 		} 
-
+		updateDisplay = false;
 	}
 }
