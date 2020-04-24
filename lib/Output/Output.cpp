@@ -256,7 +256,6 @@ MD_MAX72XX* mx;
 	(*mx).setColumn(16, 108);
 
 	// for generating text on led matrix "P1 : P2"
-	int temp;
 	int positions[] = { 30, 24, 11, 5 };
 
 	for (int j = 0; j < 4; ++j)

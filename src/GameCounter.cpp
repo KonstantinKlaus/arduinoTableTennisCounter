@@ -29,7 +29,7 @@ char message[BUF_SIZE];
 bool display2ShowPosition = true;
 
 // timer
-long timer;
+long timestamp;
 
 // * * * * * * * * * * * * * *
 // function prototypes
@@ -62,8 +62,7 @@ void setup()
 
 	printPoints(display_1, 0, 0);
 
-	sprintf(message, "P1 : P2");
-	printText(display_2, message);
+	printPlayerPosition(display_2, left);
 }
 
 
@@ -89,15 +88,21 @@ void loop()
 		case BUTTON_2:
 		case FOREWARD:
 			game.playerGetPoint(playerRight);
+			timestamp = millis();
+			display2ShowPosition = false;
 			break;
 
 		case BUTTON_1:
 		case BACK:
 			game.playerGetPoint(playerLeft);
+			timestamp = millis();
+			display2ShowPosition = false;
 			break;
 
 		case PLAY:
 			changeover();
+			timestamp = millis();
+			display2ShowPosition = true;
 			break;
 		
 		default:
@@ -105,12 +110,17 @@ void loop()
 			break;
 	}
 
+	// check for time events
+	if (millis() - timestamp >= timeDisplayToggle)
+	{
+		timestamp = millis();
+		display2ShowPosition = not display2ShowPosition;
+		updateDisplay = true;
+	} 
+
 	// update LED matrices if necessary
 	if (updateDisplay)
-	{
-		// check for time events
-		
-
+	{	
 		if (game.getState() == running)
 		{
 			// LED matrix 1
