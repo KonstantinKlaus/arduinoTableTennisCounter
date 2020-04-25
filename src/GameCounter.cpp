@@ -17,11 +17,8 @@ const long timeDisplayToggle = 5000; // 5 seconds
 // game
 Game game = Game();
 
-
-
 // string buffer
 char message[BUF_SIZE];
-
 
 // LED matrix 2 - content 
 bool display2ShowPosition = true;
@@ -29,13 +26,8 @@ bool display2ShowPosition = true;
 // timer
 long timestamp;
 
-//
+// update display flag
 bool updateDisplayFlag = false;
-
-// * * * * * * * * * * * * * *
-// function prototypes
-// * * * * * * * * * * * * * *
-
 
 
 // * * * * * * * * * * * * * *
@@ -74,10 +66,11 @@ void loop()
 	// react on input
 	switch (input_state)
 	{
+		case button3Hold:
 		case pwr:
 			game.resetGame();
 			break;
-			
+
 		case button_3:
 		case eq:
 			game.revertGame();

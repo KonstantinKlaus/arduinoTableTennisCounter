@@ -6,6 +6,7 @@
 
 // buttons
 const int buttonIntervall = 300;
+const int buttonHoldTime = 1200;
 
 const int buttonPin1 = 0;
 
@@ -41,7 +42,7 @@ const int irPin = 5;
 #define IR_NUM_8        0xFF4AB5
 #define IR_NUM_9        0xFF52AD 
 
-enum controls {noInput, button_1, button_2, button_3, pwr, play, foreward, back, eq};
+enum controls {noInput, button_1, button_2, button_3, button3Hold, pwr, play, foreward, back, eq};
 
 void setupInput();
 int checkInput();

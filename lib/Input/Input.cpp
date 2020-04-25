@@ -8,6 +8,7 @@ unsigned long button2Time = 0;
 
 int button3State = HIGH;
 unsigned long button3Time = 0;
+unsigned long button3HoldTime = 0;
 
 IRrecv irrecv(irPin);
 decode_results results;
@@ -23,41 +24,58 @@ void setupInput()
 int checkInput()
 {
 	controls retval = noInput;
+
 	// buttons
-	unsigned long tempTime = millis();
+
+	// button 1
+	unsigned long curTime = millis();
 	int buttonStateTemp = digitalRead(buttonPin1);
 	if (buttonStateTemp == LOW and buttonStateTemp != button1State)
 	{
-		if (tempTime - button1Time > buttonIntervall)
+		if (curTime - button1Time > buttonIntervall)
 		{
 			retval = button_1;
 		}
-		button1Time = tempTime;
+		button1Time = curTime;
 	} 
 	button1State = buttonStateTemp;
 
+	//button 2
 	buttonStateTemp = digitalRead(buttonPin2);
 	if (buttonStateTemp == LOW and buttonStateTemp != button2State)
 	{
-		if (tempTime - button2Time > buttonIntervall)
+		if (curTime - button2Time > buttonIntervall)
 		{
 			retval = button_2;
 		}
-		button2Time = tempTime;
+		button2Time = curTime;
 	} 
 	button2State = buttonStateTemp;
 
-
+	// button 3
 	buttonStateTemp = digitalRead(buttonPin3);
 	if (buttonStateTemp == LOW and buttonStateTemp != button3State)
 	{
-		if (tempTime - button3Time > buttonIntervall)
+		if (curTime - button3Time > buttonIntervall)
 		{
 			retval = button_3;
 		}
-		button3Time = tempTime;
+		button3Time = curTime;
 	} 
 	button3State = buttonStateTemp;
+
+	// hold
+	if (buttonStateTemp == LOW)
+	{
+		if (curTime - button3HoldTime > buttonHoldTime)
+		{
+			retval = button3Hold;
+		}
+	} else
+	{
+		button3HoldTime = curTime;
+	}
+	
 
 	// IR
 	if (irrecv.decode(&results)) {
