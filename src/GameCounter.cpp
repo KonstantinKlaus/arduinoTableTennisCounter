@@ -86,7 +86,7 @@ void loop()
 			break;
 
 		case PLAY:
-			game.changeover();
+			game.playersChangeover();
 			timestamp = millis();
 			display2ShowPosition = true;
 			break;
@@ -107,6 +107,8 @@ void loop()
 	// update LED matrices if necessary
 	if (updateDisplay)
 	{	
+		updateDisplay = false;
+
 		if (game.getState() == Game::running)
 		{
 			// LED matrix 1
@@ -136,24 +138,26 @@ void loop()
 				}
 				printSetPoints(display_2, game.getSetPoints(Game::pos_1), game.getSetPoints(Game::pos_2), rightOfService);
 			}
+		} else if (game.getState() == Game::changeover)
+		{
+			// if changeover takes place
+			sprintf(message, "change");
+			printText(display_1, message);
+			printText(display_2, message);
+			game.confirmChangeover();
+		
+		} else if (game.getState() == Game::player1Wins)
+		{
+			// P1 wins
+			sprintf(message, "P1 wins");
+			printText(display_1, message);
+			printText(display_2, message);
 		} else
 		{
-			// if game finished
-			if (game.getState() == Game::player1Wins)
-			{
-				// P1 wins
-				sprintf(message, "P1 wins");
-				printText(display_1, message);
-				printText(display_2, message);
-			} else
-			{
-				// P2 wins
-				sprintf(message, "P2 wins");
-				printText(display_1, message);
-				printText(display_2, message);
-			}
-			
-		} 
-		updateDisplay = false;
+			// P2 wins
+			sprintf(message, "P2 wins");
+			printText(display_1, message);
+			printText(display_2, message);
+		}		
 	}
 }

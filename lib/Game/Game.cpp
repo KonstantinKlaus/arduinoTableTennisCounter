@@ -38,7 +38,7 @@ void Game::playerGetSetPoint(player player)
 			rightOfService = player_1;
 		}
 
-		changeover();
+		playersChangeover();
 	}
 }
 
@@ -91,7 +91,7 @@ void Game::playerGetPoint(player player)
 		if (setPointsP1 == 2 && setPointsP2)
 			if ((pointsP1 == 5 && pointsP2 < 5)|| (pointsP2 == 5 && pointsP1 < 5))
 			{
-				changeover();
+				playersChangeover();
 			}
 		{
 
@@ -247,11 +247,19 @@ Game::player Game::getPlayer(playerPosition pos)
 }
 
 
-void Game::changeover()
+void Game::playersChangeover()
 {
 	Game::player temp = playerPos_1;
 	playerPos_1 = playerPos_2;
 	playerPos_2 = temp;
+
+	curState = changeover;
+}
+
+
+void Game::confirmChangeover()
+{
+	curState = running;
 }
 
 

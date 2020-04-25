@@ -12,7 +12,7 @@ public:
     // additional types
     enum player {player_1, player_2};
     enum playerPosition {pos_1, pos_2};
-    enum gameState {player1Wins, player2Wins, running};
+    enum gameState {player1Wins, player2Wins, running, changeover};
 
     // functions
 
@@ -43,8 +43,9 @@ public:
 
     gameState getState();
 
-    void changeover();
+    void playersChangeover();
 
+    void confirmChangeover();
 
 private:
 
