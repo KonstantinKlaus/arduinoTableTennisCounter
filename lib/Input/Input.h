@@ -11,6 +11,8 @@ const int buttonPin1 = 0;
 
 const int buttonPin2 = 1;
 
+const int buttonPin3 = 2;
+
 
 // IR Remote
 const int irPin = 5;
@@ -39,16 +41,7 @@ const int irPin = 5;
 #define IR_NUM_8        0xFF4AB5
 #define IR_NUM_9        0xFF52AD 
 
-// RETURN CONTROLS
-#define NO_INPUT 	0
-#define BUTTON_1 	1
-#define BUTTON_2    2
-#define PWR         3
-#define PLAY        4
-#define FOREWARD    5
-#define BACK        6
-#define EQ          7
-
+enum controls {noInput, button_1, button_2, button_3, pwr, play, foreward, back, eq};
 
 void setupInput();
 int checkInput();

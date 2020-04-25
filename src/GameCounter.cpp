@@ -74,29 +74,30 @@ void loop()
 	// react on input
 	switch (input_state)
 	{
-		case PWR:
+		case pwr:
 			game.resetGame();
 			break;
-
-		case EQ:
+			
+		case button_3:
+		case eq:
 			game.revertGame();
 			break;
 
-		case BUTTON_2:
-		case FOREWARD:
+		case button_2:
+		case foreward:
 			game.playerGetPoint(Game::pos_2);
 			timestamp = millis();
 			display2ShowPosition = false;
 			break;
 
-		case BUTTON_1:
-		case BACK:
+		case button_1:
+		case back:
 			game.playerGetPoint(Game::pos_1);
 			timestamp = millis();
 			display2ShowPosition = false;
 			break;
 
-		case PLAY:
+		case play:
 			game.playersChangeover();
 			timestamp = millis();
 			display2ShowPosition = true;
