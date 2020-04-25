@@ -297,3 +297,93 @@ MD_MAX72XX* mx;
 
 	(*mx).control(0, 3, MD_MAX72XX::UPDATE, MD_MAX72XX::ON);
 }
+
+
+
+void arrowAnimation()
+{
+
+	for (int k = 0; k < 32; ++k)
+	{	
+		mxLedMatrix_1.control(0, 3, MD_MAX72XX::UPDATE, MD_MAX72XX::OFF);
+		mxLedMatrix_2.control(0, 3, MD_MAX72XX::UPDATE, MD_MAX72XX::OFF);
+
+		// Display 1
+		// reset all unused columns
+		for (int i = k + 1; i < 32; ++i)
+		{
+			mxLedMatrix_1.setColumn(i, 0);
+		}
+
+		// arrow (right to left)
+		for (int i = 0; i <= k; ++i)
+		{
+
+			switch (k - i)
+			{
+			case 0:
+				mxLedMatrix_1.setColumn(i, 8);
+				break;
+
+			case 1:
+				mxLedMatrix_1.setColumn(i, 20);
+				break;
+
+			case 2:
+				mxLedMatrix_1.setColumn(i, 34);
+				break;
+			
+			case 3:
+				mxLedMatrix_1.setColumn(i, 65);
+				break;
+
+			default:
+				mxLedMatrix_1.setColumn(i, 8);
+				break;
+			}	
+		}
+
+		// Display 2
+
+		// reset all unused columns
+		for (int i = 31; k <= i; --i)
+		{
+			mxLedMatrix_2.setColumn(i, 0);
+		}
+
+		// arrow (left to right)
+		for (int i = 31; i >= 31 - k; --i)
+		{
+			int cond = k - (31 - i);
+			switch (cond)
+			{
+			case 0:
+				mxLedMatrix_2.setColumn(i, 8);
+				break;
+
+			case 1:
+				mxLedMatrix_2.setColumn(i, 20);
+				break;
+
+			case 2:
+				mxLedMatrix_2.setColumn(i, 34);
+				break;
+			
+			case 3:
+				mxLedMatrix_2.setColumn(i, 65);
+				break;
+
+			default:
+				mxLedMatrix_2.setColumn(i, 8);
+				break;
+			}	
+		}
+
+		mxLedMatrix_1.control(0, 3, MD_MAX72XX::UPDATE, MD_MAX72XX::ON);
+		mxLedMatrix_2.control(0, 3, MD_MAX72XX::UPDATE, MD_MAX72XX::ON);
+
+		// delay
+		delay(10);
+	}
+
+}

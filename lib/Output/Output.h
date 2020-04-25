@@ -28,11 +28,15 @@ enum ledMatrix {display_1, display_2};
 // Global message buffers shared by Serial and Scrolling functions
 #define BUF_SIZE  30
 
+// * * * * * * * * * * *
+// functions
+// * * * * * * * * * * *
 
 void setupOutput();
 void printText(ledMatrix display, char *pMsg);
 void printPoints(ledMatrix display, int pointP1, int pointsP2);
 void printPlayerPosition(ledMatrix display, position player1Position);
 void printSetPoints(ledMatrix display, int setPointsLeftPlayer, int setPointsRightPlayer, position rightOfService);
+void arrowAnimation();
 
 #endif

@@ -29,6 +29,9 @@ bool display2ShowPosition = true;
 // timer
 long timestamp;
 
+//
+bool updateDisplayFlag = false;
+
 // * * * * * * * * * * * * * *
 // function prototypes
 // * * * * * * * * * * * * * *
@@ -57,6 +60,14 @@ void loop()
 {
 	// check input
 	int input_state = checkInput();
+
+	// check for time events
+	if (millis() - timestamp >= timeDisplayToggle)
+	{
+		timestamp = millis();
+		display2ShowPosition = not display2ShowPosition;
+		updateDisplayFlag = true;
+	} 
 
 	bool updateDisplay = true;
 
@@ -96,13 +107,12 @@ void loop()
 			break;
 	}
 
-	// check for time events
-	if (millis() - timestamp >= timeDisplayToggle)
+	// check flag
+	if (updateDisplayFlag)
 	{
-		timestamp = millis();
-		display2ShowPosition = not display2ShowPosition;
+		updateDisplayFlag = false;
 		updateDisplay = true;
-	} 
+	}
 
 	// update LED matrices if necessary
 	if (updateDisplay)
@@ -141,10 +151,9 @@ void loop()
 		} else if (game.getState() == Game::changeover)
 		{
 			// if changeover takes place
-			sprintf(message, "change");
-			printText(display_1, message);
-			printText(display_2, message);
+			arrowAnimation();
 			game.confirmChangeover();
+			updateDisplayFlag = true;
 		
 		} else if (game.getState() == Game::player1Wins)
 		{
