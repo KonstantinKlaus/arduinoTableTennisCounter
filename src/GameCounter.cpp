@@ -17,9 +17,7 @@ const long timeDisplayToggle = 5000; // 5 seconds
 // game
 Game game = Game();
 
-// player positions
-player playerLeft;
-player playerRight;
+
 
 // string buffer
 char message[BUF_SIZE];
@@ -35,7 +33,6 @@ long timestamp;
 // function prototypes
 // * * * * * * * * * * * * * *
 
-void changeover();
 
 
 // * * * * * * * * * * * * * *
@@ -43,22 +40,11 @@ void changeover();
 // * * * * * * * * * * * * * *
 
 
-void changeover()
-{
-	player temp = playerLeft;
-	playerLeft = playerRight;
-	playerRight = temp;
-}
-
-
 // setup function, is called once on startup
 void setup()
 {
 	setupInput();
 	setupOutput();
-
-	playerLeft  = player_1;
-	playerRight = player_2;
 
 	printPoints(display_1, 0, 0);
 
@@ -87,20 +73,20 @@ void loop()
 
 		case BUTTON_2:
 		case FOREWARD:
-			game.playerGetPoint(playerRight);
+			game.playerGetPoint(Game::pos_2);
 			timestamp = millis();
 			display2ShowPosition = false;
 			break;
 
 		case BUTTON_1:
 		case BACK:
-			game.playerGetPoint(playerLeft);
+			game.playerGetPoint(Game::pos_1);
 			timestamp = millis();
 			display2ShowPosition = false;
 			break;
 
 		case PLAY:
-			changeover();
+			game.changeover();
 			timestamp = millis();
 			display2ShowPosition = true;
 			break;
@@ -121,25 +107,17 @@ void loop()
 	// update LED matrices if necessary
 	if (updateDisplay)
 	{	
-		if (game.getState() == running)
+		if (game.getState() == Game::running)
 		{
 			// LED matrix 1
-			printPoints(display_1, game.getPoints(playerLeft), game.getPoints(playerRight));
+			printPoints(display_1, game.getPoints(Game::pos_1), game.getPoints(Game::pos_2));
 
-			position rightOfService;
-			if (playerLeft == game.getServingPlayer()){
-				rightOfService = left;
-			} else
-			{
-				rightOfService = right;
-			}
-			
 			// LED matrix 2
 			if (display2ShowPosition)
 			{
 				// show player position
 				position p1Position;
-				if (playerLeft == player_1)
+				if (game.getPlayer(Game::pos_1) == Game::player_1)
 				{
 					p1Position = left;
 				} else
@@ -149,12 +127,19 @@ void loop()
 				printPlayerPosition(display_2, p1Position);
 			} else {
 				// show setPoints
-				printSetPoints(display_2, game.getSetPoints(playerLeft), game.getSetPoints(playerRight), rightOfService);
+				position rightOfService;
+				if (game.getServingPosition() == Game::pos_1){
+					rightOfService = left;
+				} else
+				{
+					rightOfService = right;
+				}
+				printSetPoints(display_2, game.getSetPoints(Game::pos_1), game.getSetPoints(Game::pos_2), rightOfService);
 			}
 		} else
 		{
 			// if game finished
-			if (game.getState() == player1Wins)
+			if (game.getState() == Game::player1Wins)
 			{
 				// P1 wins
 				sprintf(message, "P1 wins");
