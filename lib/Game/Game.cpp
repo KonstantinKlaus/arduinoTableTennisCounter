@@ -15,6 +15,7 @@ void Game::playerGetSetPoint(player player)
 			if (setPointsP1 == 3)
 			{
 				curState = player1Wins;
+				return;
 			}
 
 		} else if (player == player_2)
@@ -23,7 +24,9 @@ void Game::playerGetSetPoint(player player)
 			if (setPointsP2 == 3)
 			{
 				curState = player2Wins;
+				return;
 			}
+			
 		}
 
 		// reset points
@@ -38,7 +41,7 @@ void Game::playerGetSetPoint(player player)
 			rightOfService = player_1;
 		}
 
-		playersChangeover();
+		playersChangeover();	
 	}
 }
 
