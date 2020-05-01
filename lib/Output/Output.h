@@ -9,14 +9,15 @@
 #define HARDWARE_TYPE MD_MAX72XX::FC16_HW
 #define MAX_DEVICES 4
 
-#define CLK_PIN   13  // or SCK
-#define DATA_PIN  12  // or MOSI
-#define CS_PIN    11  // or SS
+#define CLK_PIN   9  // or SCK
+#define DATA_PIN  8  // or MOSI
+#define CS_PIN    7  // or SS
 
 
-#define CLK_PIN_2   9  // or SCK
-#define DATA_PIN_2  8  // or MOSI
-#define CS_PIN_2    7  // or SS
+
+#define CLK_PIN_2   13  // or SCK
+#define DATA_PIN_2  12  // or MOSI
+#define CS_PIN_2    11 // or SS
 
 enum position {left, right};
 
