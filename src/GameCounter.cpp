@@ -7,6 +7,9 @@
 // constants
 // * * * * * * * * * * * * * *
 
+// Global message buffers
+#define BUF_SIZE  30
+
 // pins
 // buttons
 #define buttonPin1  0
@@ -17,8 +20,14 @@
 #define irPin 5
 
 // LED Matrices 1
+#define CLK_PIN   13  // or SCK
+#define DATA_PIN  12  // or MOSI
+#define CS_PIN    11  // or SS
 
-// LED Matrices 1
+// LED Matrices 2
+#define CLK_PIN_2   9  // or SCK
+#define DATA_PIN_2  8  // or MOSI
+#define CS_PIN_2    7 // or SS
 
 
 // time between display 2 toggles content
@@ -33,6 +42,10 @@ Game game = Game();
 
 // Input
 Input input = Input(buttonPin1, buttonPin2, buttonPin3, irPin);
+
+// Ouput
+
+Output output = Output(CLK_PIN, DATA_PIN, CS_PIN, CLK_PIN_2, DATA_PIN_2, CS_PIN_2);
 
 // string buffer
 char message[BUF_SIZE];
@@ -56,11 +69,10 @@ bool updateDisplayFlag = false;
 void setup()
 {
 	input.setupInput();
-	setupOutput();
 
-	printPoints(display_1, 0, 0);
-
-	printPlayerPosition(display_2, left);
+	output.setupOutput();
+	output.printPoints(Output::display_1, 0, 0);
+	output.printPlayerPosition(Output::display_2, Output::left);
 }
 
 
@@ -133,36 +145,36 @@ void loop()
 		if (game.getState() == Game::running)
 		{
 			// LED matrix 1
-			printPoints(display_1, game.getPoints(Game::pos_1), game.getPoints(Game::pos_2));
+			 output.printPoints(Output::display_1, game.getPoints(Game::pos_1), game.getPoints(Game::pos_2));
 
 			// LED matrix 2
 			if (display2ShowPosition)
 			{
 				// show player position
-				position p1Position;
+				Output::position p1Position;
 				if (game.getPlayer(Game::pos_1) == Game::player_1)
 				{
-					p1Position = left;
+					p1Position = Output::left;
 				} else
 				{
-					p1Position = right;
+					p1Position = Output::right;
 				}
-				printPlayerPosition(display_2, p1Position);
+				output.printPlayerPosition(Output::display_2, p1Position);
 			} else {
 				// show setPoints
-				position rightOfService;
+				Output::position rightOfService;
 				if (game.getServingPosition() == Game::pos_1){
-					rightOfService = left;
+					rightOfService = Output::left;
 				} else
 				{
-					rightOfService = right;
+					rightOfService = Output::right;
 				}
-				printSetPoints(display_2, game.getSetPoints(Game::pos_1), game.getSetPoints(Game::pos_2), rightOfService);
+				output.printSetPoints(Output::display_2, game.getSetPoints(Game::pos_1), game.getSetPoints(Game::pos_2), rightOfService);
 			}
 		} else if (game.getState() == Game::changeover)
 		{
 			// if changeover takes place
-			arrowAnimation();
+			output.arrowAnimation();
 			game.confirmChangeover();
 			updateDisplayFlag = true;
 		
@@ -170,14 +182,14 @@ void loop()
 		{
 			// P1 wins
 			sprintf(message, "P1 wins");
-			printText(display_1, message);
-			printText(display_2, message);
+			output.printText(Output::display_1, message);
+			output.printText(Output::display_2, message);
 		} else
 		{
 			// P2 wins
 			sprintf(message, "P2 wins");
-			printText(display_1, message);
-			printText(display_2, message);
+			output.printText(Output::display_1, message);
+			output.printText(Output::display_2, message);
 		}		
 	}
 }

@@ -1,19 +1,28 @@
 #include <Output.h>
 
-// control instances for led matrices
-MD_MAX72XX mxLedMatrix_1 = MD_MAX72XX(HARDWARE_TYPE, DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
-MD_MAX72XX mxLedMatrix_2 = MD_MAX72XX(HARDWARE_TYPE, DATA_PIN_2, CLK_PIN_2, CS_PIN_2, MAX_DEVICES);
+// Define the number of devices we have in the chain and the hardware interface
+#define HARDWARE_TYPE MD_MAX72XX::FC16_HW
+#define MAX_DEVICES 4
 
-void printText(MD_MAX72XX & mx, uint8_t modStart, uint8_t modEnd, char *pMsg);
+// Text parameters
+#define CHAR_SPACING  1 // pixels between characters
 
-void setupOutput()
+Output::Output(int clkPin, int dataPin, int csPin, int clkPinM2, int dataPinM2, int csPinM2)
+: mxLedMatrix_1(HARDWARE_TYPE, dataPin, clkPin, csPin, MAX_DEVICES), mxLedMatrix_2 (HARDWARE_TYPE, dataPinM2, clkPinM2, csPinM2, MAX_DEVICES)
+{	
+	mxLedMatrix_1 = MD_MAX72XX(HARDWARE_TYPE, dataPin, clkPin, csPin, MAX_DEVICES);
+	mxLedMatrix_2 = MD_MAX72XX(HARDWARE_TYPE, dataPinM2, clkPinM2, csPinM2, MAX_DEVICES);
+}
+
+
+void Output::setupOutput()
 {
     mxLedMatrix_1.begin();
 	mxLedMatrix_2.begin();
 }
 
 
-void printText(ledMatrix display, char *pMsg)
+void Output::printText(ledMatrix display, char *pMsg)
 {
 	MD_MAX72XX* mx;
 
@@ -87,7 +96,7 @@ void printText(ledMatrix display, char *pMsg)
 }
 
 
-void printPoints(ledMatrix display, int pointsLeftPlayer, int pointsRightPlayer)
+void Output::printPoints(ledMatrix display, int pointsLeftPlayer, int pointsRightPlayer)
 {
 	MD_MAX72XX* mx;
 
@@ -152,7 +161,7 @@ void printPoints(ledMatrix display, int pointsLeftPlayer, int pointsRightPlayer)
 }
 
 
-void printSetPoints(ledMatrix display, int setPointsLeftPlayer, int setPointsRightPlayer, position rightOfService)
+void Output::printSetPoints(ledMatrix display, int setPointsLeftPlayer, int setPointsRightPlayer, position rightOfService)
 {
 	MD_MAX72XX* mx;
 
@@ -227,7 +236,7 @@ void printSetPoints(ledMatrix display, int setPointsLeftPlayer, int setPointsRig
 	(*mx).control(0, 3, MD_MAX72XX::UPDATE, MD_MAX72XX::ON);
 }
 
-void printPlayerPosition(ledMatrix display, position player1Position)
+void Output::printPlayerPosition(ledMatrix display, position player1Position)
 {
 MD_MAX72XX* mx;
 
@@ -300,7 +309,7 @@ MD_MAX72XX* mx;
 
 
 
-void arrowAnimation()
+void Output::arrowAnimation()
 {
 
 	for (int k = 0; k < 32; ++k)
