@@ -7,6 +7,20 @@
 // constants
 // * * * * * * * * * * * * * *
 
+// pins
+// buttons
+#define buttonPin1  0
+#define buttonPin2  1
+#define buttonPin3  2
+
+// IR Remote
+#define irPin 5
+
+// LED Matrices 1
+
+// LED Matrices 1
+
+
 // time between display 2 toggles content
 const long timeDisplayToggle = 5000; // 5 seconds
 
@@ -16,6 +30,9 @@ const long timeDisplayToggle = 5000; // 5 seconds
 
 // game
 Game game = Game();
+
+// Input
+Input input = Input(buttonPin1, buttonPin2, buttonPin3, irPin);
 
 // string buffer
 char message[BUF_SIZE];
@@ -38,7 +55,7 @@ bool updateDisplayFlag = false;
 // setup function, is called once on startup
 void setup()
 {
-	setupInput();
+	input.setupInput();
 	setupOutput();
 
 	printPoints(display_1, 0, 0);
@@ -51,7 +68,7 @@ void setup()
 void loop()
 {
 	// check input
-	int input_state = checkInput();
+	int input_state = input.checkInput();
 
 	// check for time events
 	if (millis() - timestamp >= timeDisplayToggle)
@@ -66,31 +83,31 @@ void loop()
 	// react on input
 	switch (input_state)
 	{
-		case button3Hold:
-		case pwr:
+		case Input::button3Hold:
+		case Input::pwr:
 			game.resetGame();
 			break;
 
-		case button_3:
-		case eq:
+		case Input::button_3:
+		case Input::eq:
 			game.revertGame();
 			break;
 
-		case button_2:
-		case foreward:
+		case Input::button_2:
+		case Input::foreward:
 			game.playerGetPoint(Game::pos_2);
 			timestamp = millis();
 			display2ShowPosition = false;
 			break;
 
-		case button_1:
-		case back:
+		case Input::button_1:
+		case Input::back:
 			game.playerGetPoint(Game::pos_1);
 			timestamp = millis();
 			display2ShowPosition = false;
 			break;
 
-		case play:
+		case Input::play:
 			game.playersChangeover();
 			timestamp = millis();
 			display2ShowPosition = true;

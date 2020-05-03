@@ -4,19 +4,6 @@
 #include <Arduino.h>
 #include <IRremote.h>
 
-// buttons
-const int buttonIntervall = 300;
-const int buttonHoldTime = 1200;
-
-const int buttonPin1 = 0;
-
-const int buttonPin2 = 1;
-
-const int buttonPin3 = 2;
-
-
-// IR Remote
-const int irPin = 5;
 
 
 // IR Remote Keys
@@ -40,11 +27,50 @@ const int irPin = 5;
 #define IR_NUM_6        0xFF5AA5
 #define IR_NUM_7        0xFF42BD
 #define IR_NUM_8        0xFF4AB5
-#define IR_NUM_9        0xFF52AD 
+#define IR_NUM_9        0xFF52AD
 
-enum controls {noInput, button_1, button_2, button_3, button3Hold, pwr, play, foreward, back, eq};
+class Input
+{
 
-void setupInput();
-int checkInput();
+public:
+    enum controls {noInput, button_1, button_2, button_3, button3Hold, pwr, play, foreward, back, eq};
+
+    // buttons
+    const unsigned buttonIntervall = 200;
+    const unsigned buttonHoldTime = 1200;
+
+    Input(int buttonPin1, int buttonPin2, int buttonPin3, int irPin);
+    
+    void setupInput();
+    controls checkInput();
+
+private:
+
+    // buttons
+    int buttonPin1;
+    int buttonPin2;
+    int buttonPin3;
+
+    int button1State = HIGH;
+    unsigned long button1Time = 0;
+
+    int button2State = HIGH;
+    unsigned long button2Time = 0;
+
+    int button3State = HIGH;
+    unsigned long button3Time = 0;
+    unsigned long button3HoldTime = 0;
+
+
+    // IR Remote
+    int irPin;
+
+    decode_results results;
+    IRrecv irrecv;
+
+};
+
+
+
 
 #endif

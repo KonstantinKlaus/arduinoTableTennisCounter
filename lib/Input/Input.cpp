@@ -1,19 +1,16 @@
 #include <Input.h>
 
-int button1State = HIGH;
-unsigned long button1Time = 0;
+Input::Input(int buttonPin1, int buttonPin2, int buttonPin3, int irPin) : irrecv(irPin)
+{
+	Input::buttonPin1 = buttonPin1;
+	Input::buttonPin2 = buttonPin2;
+	Input::buttonPin3 = buttonPin3;
+	Input::irPin = irPin;
 
-int button2State = HIGH;
-unsigned long button2Time = 0;
+	irrecv = IRrecv(irPin);
+}
 
-int button3State = HIGH;
-unsigned long button3Time = 0;
-unsigned long button3HoldTime = 0;
-
-IRrecv irrecv(irPin);
-decode_results results;
-
-void setupInput()
+void Input::setupInput()
 {	
     pinMode(buttonPin1, INPUT_PULLUP);
 	pinMode(buttonPin2, INPUT_PULLUP);
@@ -21,7 +18,7 @@ void setupInput()
 	irrecv.enableIRIn(); // Start the receiver
 }
 
-int checkInput()
+Input::controls Input::checkInput()
 {
 	controls retval = noInput;
 
