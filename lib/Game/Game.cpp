@@ -91,8 +91,8 @@ void Game::playerGetPoint(player player)
 		}
 
 		// when both players have 2 set points, changeover at 5
-		if (setPointsP1 == 2 && setPointsP2)
-			if ((pointsP1 == 5 && pointsP2 < 5)|| (pointsP2 == 5 && pointsP1 < 5))
+		if (setPointsP1 == 2 && setPointsP2 == 2)
+			if ((player == player_1 && pointsP1 == 5 && pointsP2 < 5)|| (player == player_2 && pointsP2 == 5 && pointsP1 < 5))
 			{
 				playersChangeover();
 			}
