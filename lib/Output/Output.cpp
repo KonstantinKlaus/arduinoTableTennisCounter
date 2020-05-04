@@ -10,8 +10,6 @@
 Output::Output(int clkPin, int dataPin, int csPin, int clkPinM2, int dataPinM2, int csPinM2)
 : mxLedMatrix_1(HARDWARE_TYPE, dataPin, clkPin, csPin, MAX_DEVICES), mxLedMatrix_2 (HARDWARE_TYPE, dataPinM2, clkPinM2, csPinM2, MAX_DEVICES)
 {	
-	mxLedMatrix_1 = MD_MAX72XX(HARDWARE_TYPE, dataPin, clkPin, csPin, MAX_DEVICES);
-	mxLedMatrix_2 = MD_MAX72XX(HARDWARE_TYPE, dataPinM2, clkPinM2, csPinM2, MAX_DEVICES);
 }
 
 

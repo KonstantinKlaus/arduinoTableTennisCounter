@@ -12,22 +12,22 @@
 
 // pins
 // buttons
-#define buttonPin1  0
-#define buttonPin2  1
-#define buttonPin3  2
+#define BUTTON_PIN_1  0
+#define BUTTON_PIN_2  1
+#define BUTTON_PIN_3  2
 
 // IR Remote
-#define irPin 5
+#define IR_PIN 5
 
 // LED Matrices 1
-#define CLK_PIN   13  // or SCK
-#define DATA_PIN  12  // or MOSI
-#define CS_PIN    11  // or SS
+#define CLK_PIN   9  // or SCK
+#define DATA_PIN  8  // or MOSI
+#define CS_PIN    7  // or SS
 
 // LED Matrices 2
-#define CLK_PIN_2   9  // or SCK
-#define DATA_PIN_2  8  // or MOSI
-#define CS_PIN_2    7 // or SS
+#define CLK_PIN_2   13  // or SCK
+#define DATA_PIN_2  12  // or MOSI
+#define CS_PIN_2    11 // or SS
 
 
 // time between display 2 toggles content
@@ -41,7 +41,7 @@ const long timeDisplayToggle = 5000; // 5 seconds
 Game game = Game();
 
 // Input
-Input input = Input(buttonPin1, buttonPin2, buttonPin3, irPin);
+Input input = Input(BUTTON_PIN_1, BUTTON_PIN_2, BUTTON_PIN_3, IR_PIN);
 
 // Ouput
 
