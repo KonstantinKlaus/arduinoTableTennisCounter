@@ -6,8 +6,6 @@ Input::Input(int buttonPin1, int buttonPin2, int buttonPin3, int irPin) : irrecv
 	Input::buttonPin2 = buttonPin2;
 	Input::buttonPin3 = buttonPin3;
 	Input::irPin = irPin;
-
-	irrecv = IRrecv(irPin);
 }
 
 void Input::setupInput()
