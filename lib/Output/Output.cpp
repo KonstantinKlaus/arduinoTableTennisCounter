@@ -13,6 +13,7 @@ Output::Output(int clkPin, int dataPin, int csPin, int clkPinM2, int dataPinM2, 
 }
 
 
+// LED Matrices start
 void Output::setupOutput()
 {
     mxLedMatrix_1.begin();
@@ -20,6 +21,7 @@ void Output::setupOutput()
 }
 
 
+// print text on certain LED matrix
 void Output::printText(ledMatrix display, char *pMsg)
 {
 	MD_MAX72XX* mx;
@@ -94,6 +96,7 @@ void Output::printText(ledMatrix display, char *pMsg)
 }
 
 
+// print points in Format "XX : XX" on certain LED matrix
 void Output::printPoints(ledMatrix display, int pointsLeftPlayer, int pointsRightPlayer)
 {
 	MD_MAX72XX* mx;
@@ -159,6 +162,7 @@ void Output::printPoints(ledMatrix display, int pointsLeftPlayer, int pointsRigh
 }
 
 
+// print set points in format "<X :: X " or "X :: X>" where '<' or '>' shows  right of service
 void Output::printSetPoints(ledMatrix display, int setPointsLeftPlayer, int setPointsRightPlayer, position rightOfService)
 {
 	MD_MAX72XX* mx;
@@ -234,6 +238,7 @@ void Output::printSetPoints(ledMatrix display, int setPointsLeftPlayer, int setP
 	(*mx).control(0, 3, MD_MAX72XX::UPDATE, MD_MAX72XX::ON);
 }
 
+// print position of P1 and P2 in format "PX : PX" on certain LED matrix array
 void Output::printPlayerPosition(ledMatrix display, position player1Position)
 {
 MD_MAX72XX* mx;
@@ -306,7 +311,7 @@ MD_MAX72XX* mx;
 }
 
 
-
+// arrow animation on both LED matrix arrays for showing changeover
 void Output::arrowAnimation()
 {
 

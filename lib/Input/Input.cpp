@@ -8,6 +8,8 @@ Input::Input(int buttonPin1, int buttonPin2, int buttonPin3, int irPin) : irrecv
 	Input::irPin = irPin;
 }
 
+
+// input begin
 void Input::setupInput()
 {	
     pinMode(buttonPin1, INPUT_PULLUP);
@@ -16,6 +18,8 @@ void Input::setupInput()
 	irrecv.enableIRIn(); // Start the receiver
 }
 
+
+// check if there is any input action, returns 'noInput' if no input occures
 Input::controls Input::checkInput()
 {
 	controls retval = noInput;

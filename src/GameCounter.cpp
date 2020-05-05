@@ -44,7 +44,6 @@ Game game = Game();
 Input input = Input(BUTTON_PIN_1, BUTTON_PIN_2, BUTTON_PIN_3, IR_PIN);
 
 // Ouput
-
 Output output = Output(CLK_PIN, DATA_PIN, CS_PIN, CLK_PIN_2, DATA_PIN_2, CS_PIN_2);
 
 // string buffer

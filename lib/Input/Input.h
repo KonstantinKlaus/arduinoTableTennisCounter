@@ -6,7 +6,7 @@
 
 
 
-// IR Remote Keys
+// IR Remote Keys (Codes for Elegoo IR remote control, change for different remote controls)
 #define IR_PWR 		    0xFFA25D
 #define IR_VOL_UP       0xFF629D
 #define IR_FUNC		    0xFFE21D
@@ -33,12 +33,14 @@ class Input
 {
 
 public:
+    // enum for possible inputs
     enum controls {noInput, button_1, button_2, button_3, button3Hold, pwr, play, foreward, back, eq};
 
     // buttons
     const unsigned buttonIntervall = 200;
     const unsigned buttonHoldTime = 1200;
 
+    // functions
     Input(int buttonPin1, int buttonPin2, int buttonPin3, int irPin);
     
     void setupInput();
