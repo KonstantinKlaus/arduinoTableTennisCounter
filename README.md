@@ -11,4 +11,5 @@ For this setup we need
 
 ## Software
 For compiling and flashing the code onto the Arduino, [PlattformIO](https://platformio.org/) is used.
-PlattformIO
+PlattformIO core is a building, compiling and library managing toolset for embedded plattforms.
+Additional PlattformIO provides the PlattformIO IDE, a plugin for [Visual Studio Code](https://code.visualstudio.com/).
