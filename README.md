@@ -10,3 +10,5 @@ For this setup we need
 * Optional: IR Receiver Module
 
 ## Software
+For compiling and flashing the code onto the Arduino, [PlattformIO](https://platformio.org/) is used.
+PlattformIO
